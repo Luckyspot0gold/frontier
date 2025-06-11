@@ -1,0 +1,142 @@
+#Dockerfile
+FROM python:3.10-slim
+WORKDIR /app
+COPY requirements.txt.
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["streamlit", "run", "app.py"]
+# Run in each repo root
+stone-cli sentry install-- force
+.github/workflows/stone-sentry.yml
+name: Stone Sentry
+on: [workflow_dispatch, push]
+jobs:
+  guardian:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Quantum Preflight
+      uses: stoneverse/quantum-ci@v3
+      with:
+        wyoming-mode: true
+    - name: Auto-Fix Common Issues
+      uses: stoneverse/autofix@v2
+      gcloud iam service-accounts keys create gsa-key.json \
+  --iam-account=github-actions@$PROJECT_ID.iam.gserviceaccount.com
+gh secret set GCP_SA_KEY < gsa-key.json
+git checkout main
+stone-cli fix --repo=corporate_brokerage --issue=ci
+git commit -am "Fixed Python 3.10 and CodeQL paths"
+git push
+npm install ts-loader@9.5.0 --save-dev
+stone-cli lint ---fix --rules=stone-frontier
+git commit -am "Updated TS loader and lint rules"
+git push
+stone-cli docker generate --app=streamlit > Dockerfile
+gh secret remove GCP_SA_KEY
+gh secret set GCP_SA_KEY < new-gsa-key.json
+git commit -am "Added Dockerfile and new GCP key"
+git push
+.github/workflows/preflight.yml
+name: Preflight Check
+on: [pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: stoneverse/preflight@v2
+      with:
+        checks: "dependencies, secrets,compat" name: Luckyspot0gold@github, @StoneYard, @PotOgold @Luckybagsnags.cb.id, Check dist/
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npm run build   # This should generate the dist/ directory
+
+    - name: Check dist/
+      run: |
+        if [ ! -d "dist" ]; then
+          echo "dist directory not found!"
+          exit 1
+        fi
+        # Add any other checks for the dist directory here
+        "scripts": {
+  "build": "tsc"
+}
+"scripts": {
+-  "build": "tsc",
++  "build": "tsc && stone-cli bundle",
+-  "check-dist": "ls dist/",
++  "check-dist": "stone-cli validate-dist"
+}
+// stone.config.js
+module.exports = {
+  bundles: {
+    frontier: {
+      entry: 'src/index.ts',
+      dist: 'dist/frontier-bundle.js',
+      quantum: true
+    },
+    trader: {
+      entry: 'src/traderCore.ts',
+      dist: 'dist/dist/ dist/trader-bundle.js',
+      Wyoming: true
+    }
+  }
+}
+name: Quantum Dist Validation
+on: [push]
+
+jobs:
+  check-dist:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Stone CLI
+      run: npm install -g @stoneverse/cli
+    - name: Quantum Bundle
+      run: stone-cli bundle-- force
+    - name: Validate Dist
+      run: stone-cli validate-dist --strict
+# Fix existing dist issues
+stone-cli repair-dist --path=../ --quantum
+
+# .github/workflows/autoheal.yml
+name: AutoHeal
+on: [workflow_failure]
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: stoneverse/ci-healer@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+# Regenerate bundles
+stone-cli bundle --force --wyoming
+
+curl -s https://stoneverse.tech/install-sentinel | bash
+from stone_sentinel import DesktopCompanion
+
+dee = DesktopCompanion(
+    avatar="wyoming_rogue",
+    position="bottom_right",
+    autonomy_level="CO_BUILDER"
+)
+dee.activate( yes, true, activate, deploy, engage, aproved)
+stone-cli repair-dist-- quantum
+stone-cli validate-dist-- verbose
